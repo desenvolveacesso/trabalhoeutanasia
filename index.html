@@ -1,0 +1,371 @@
+
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Material para Simulação de Tribunal - RE 100.874.901/XX</title>
+    <style>
+        body {
+            font-family: 'Times New Roman', serif;
+            line-height: 1.5;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            background-color: white;
+            padding: 40px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            text-align: center;
+            font-size: 16pt;
+            margin-bottom: 30px;
+        }
+        h2 {
+            font-size: 14pt;
+            border-bottom: 1px solid #000;
+            padding-bottom: 5px;
+            margin-top: 30px;
+        }
+        p {
+            text-align: justify;
+            text-indent: 30px;
+            margin: 10px 0;
+            font-size: 12pt;
+        }
+        .section {
+            margin-bottom: 30px;
+        }
+        .download-btn {
+            display: block;
+            width: 200px;
+            margin: 20px auto;
+            padding: 10px;
+            background-color: #2c3e50;
+            color: white;
+            text-align: center;
+            text-decoration: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+        .participant-card {
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 5px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            font-size: 10pt;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>MATERIAL PARA SIMULAÇÃO DE TRIBUNAL<br>RE 100.874.901/XX</h1>
+        
+        <div class="section">
+            <h2>INTRODUÇÃO</h2>
+            <p>Este documento contém os materiais necessários para a simulação de julgamento do Recurso Extraordinário com repercussão geral reconhecida, que discute a constitucionalidade da Lei Estadual nº 99.999/2024.</p>
+        </div>
+
+        <div class="section">
+            <h2>MEMORIAIS</h2>
+            
+            <div class="participant-card">
+                <h3>Memorial da ACOBEST (Recorrente)</h3>
+                <p>Documento completo com fundamentação jurídica da recorrente.</p>
+                <a class="download-btn" href="#" onclick="downloadDoc('acobest')">Baixar Memorial ACOBEST</a>
+            </div>
+            
+            <div class="participant-card">
+                <h3>Memorial do Governador do Estado (Recorrido)</h3>
+                <p>Documento completo com fundamentação jurídica do recorrido.</p>
+                <a class="download-btn" href="#" onclick="downloadDoc('governador')">Baixar Memorial Governador</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>FALAS DOS PARTICIPANTES</h2>
+            
+            <div class="participant-card">
+                <h3>Ministro Presidente</h3>
+                <p>Roteiro completo de abertura, condução e encerramento da sessão.</p>
+                <a class="download-btn" href="#" onclick="downloadDoc('presidente')">Baixar Roteiro Presidente</a>
+            </div>
+            
+            <div class="participant-card">
+                <h3>Ministro Relator</h3>
+                <p>Voto inicial com análise do caso e posicionamento.</p>
+                <a class="download-btn" href="#" onclick="downloadDoc('relator')">Baixar Voto Relator</a>
+            </div>
+            
+            <div class="participant-card">
+                <h3>Advogado da ACOBEST</h3>
+                <p>Sustentação oral completa da recorrente.</p>
+                <a class="download-btn" href="#" onclick="downloadDoc('advogado_acobest')">Baixar Sustentação ACOBEST</a>
+            </div>
+            
+            <div class="participant-card">
+                <h3>Advogado do Estado</h3>
+                <p>Sustentação oral completa do recorrido.</p>
+                <a class="download-btn" href="#" onclick="downloadDoc('advogado_estado')">Baixar Sustentação Estado</a>
+            </div>
+            
+            <div class="participant-card">
+                <h3>Procurador-Geral da República</h3>
+                <p>Manifestação institucional sobre o caso.</p>
+                <a class="download-btn" href="#" onclick="downloadDoc('pgr')">Baixar Manifestação PGR</a>
+            </div>
+        </div>
+
+        <div class="section">
+            <h2>CRONOGRAMA DE APRESENTAÇÃO</h2>
+            <p>Documento com a divisão de tempo e sequência da apresentação.</p>
+            <a class="download-btn" href="#" onclick="downloadDoc('cronograma')">Baixar Cronograma</a>
+        </div>
+
+        <div class="footer">
+            <p>Brasília, 2024</p>
+            <p>Material preparado para simulação de tribunal acadêmico</p>
+        </div>
+    </div>
+
+    <script>
+        function downloadDoc(type) {
+            let content = "";
+            let filename = "";
+            
+            switch(type) {
+                case 'acobest':
+                    filename = "Memorial_ACOBEST.doc";
+                    content = memorialACOBEST();
+                    break;
+                case 'governador':
+                    filename = "Memorial_Governador.doc";
+                    content = memorialGovernador();
+                    break;
+                case 'presidente':
+                    filename = "Roteiro_Presidente.doc";
+                    content = roteiroPresidente();
+                    break;
+                case 'relator':
+                    filename = "Voto_Relator.doc";
+                    content = votoRelator();
+                    break;
+                case 'advogado_acobest':
+                    filename = "Sustentacao_ACOBEST.doc";
+                    content = sustentacaoACOBEST();
+                    break;
+                case 'advogado_estado':
+                    filename = "Sustentacao_Estado.doc";
+                    content = sustentacaoEstado();
+                    break;
+                case 'pgr':
+                    filename = "Manifestacao_PGR.doc";
+                    content = manifestacaoPGR();
+                    break;
+                case 'cronograma':
+                    filename = "Cronograma_Apresentacao.doc";
+                    content = cronogramaApresentacao();
+                    break;
+            }
+            
+            // Create blob and download
+            const blob = new Blob([content], { type: 'application/msword' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = filename;
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        }
+
+        function memorialACOBEST() {
+            return `
+MEMORIAL DA ACOBEST - RECORRENTE
+RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
+
+Advogados: Equipe Jurídica da ACOBEST
+RECORRENTE: ACOBEST
+RECORRIDO: ESTADO-MEMBRO
+RELATOR: MINISTRO [NOME]
+
+TESE DE REPERCUSSÃO GERAL: A lei estadual que impede a atuação de empresas que prestam apoio logístico, informativo ou comercial ao suicídio assistido no exterior viola a competência privativa da União para legislar sobre direito civil e comercial, além de ofender os princípios constitucionais da livre iniciativa, autonomia da vontade e razoabilidade.
+
+EMENTA DA REPERCUSSÃO GERAL: RECURSO EXTRAORDINÁRIO. LEI ESTADUAL QUE CANCELA INSCRIÇÃO ESTADUAL DE EMPRESAS QUE PRESTAM APOIO AO SUICÍDIO ASSISTIDO NO EXTERIOR. OFENSA À COMPETÊNCIA DA UNIÃO PARA LEGISLAR SOBRE DIREITO CIVIL E COMERCIAL. VIOLAÇÃO À LIVRE INICIATIVA E AUTONOMIA PRIVADA. PRINCÍPIO DA RAZOABILIDADE. REPERCUSSÃO GERAL RECONHECIDA.
+
+ARGUMENTAÇÃO: A lei invade competência da União (art. 22, I, CF/88). Viola a liberdade de empresa e a autonomia privada (art. 1º, III, art. 5º, caput, e art. 170, CF/88). Ofende o princípio da razoabilidade ao impedir atividade lícita no exterior. A lei possui efeito extraterritorial indevido.
+
+PEDIDO: Declarar a inconstitucionalidade da Lei Estadual nº 99.999/2024.
+
+Brasília, 2024
+            `;
+        }
+
+        function memorialGovernador() {
+            return `
+MEMORIAL DO GOVERNADOR DO ESTADO - RECORRIDO
+RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
+
+Advogados: Procuradoria do Estado
+RECORRENTE: ACOBEST
+RECORRIDO: ESTADO-MEMBRO
+RELATOR: MINISTRO [NOME]
+
+TESE DE REPERCUSSÃO GERAL: A lei estadual que coíbe a intermediação de serviços destinados ao suicídio assistido no exterior está em conformidade com a ordem constitucional brasileira, que protege a vida como bem jurídico supremo, e não ofende a competência da União, pois regula atividade econômica de impacto local e interesse social.
+
+EMENTA DA REPERCUSSÃO GERAL: RECURSO EXTRAORDINÁRIO. LEI ESTADUAL. CASSACIÓN DE INSCRIÇÃO ESTADUAL DE EMPRESAS QUE FACILITAM SUICÍDIO ASSISTIDO NO EXTERIOR. PROTEÇÃO DA VIDA E ORDEM PÚBLICA. COMPETÊNCIA CONCORRENTE DO ESTADO. PRINCÍPIO DA DIGNIDADE DA PESSOA HUMANA. REPERCUSSÃO GERAL RECONHECIDA.
+
+ARGUMENTAÇÃO: A lei visa proteger a vida e a dignidade humana, valores fundamentais (art. 5º, caput, CF/88). O Estado tem competência para regular atividades econômicas que afetam a ordem social local (art. 24, CF/88). A medida é razoável e proporcional para coibir práticas contrárias à ética e à lei. Não há ofensa à livre iniciativa, pois a atividade em questão colide com o ordenamento jurídico nacional.
+
+PEDIDO: Negar provimento ao recurso e manter a validade da Lei Estadual nº 99.999/2024.
+
+Brasília, 2024
+            `;
+        }
+
+        function roteiroPresidente() {
+            return `
+ROTEIRO DO MINISTRO PRESIDENTE
+RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
+
+FALA DE ABERTURA (30 segundos):
+"Boa tarde. Abro a sessão de julgamento do Recurso Extraordinário nº 100.874.901/XX, com repercussão geral reconhecida, que discute a constitucionalidade da Lei Estadual nº 99.999/2024. Conforme o rito, concedo a palavra ao eminente Ministro Relator."
+
+CONDUÇÃO DA SESSÃO (1 minuto):
+- Após o voto do Relator: "Agradeço ao Ministro Relator. Concedo a palavra ao advogado da ACOBEST."
+- Após a sustentação da ACOBEST: "Agradeço ao advogado da ACOBEST. Concedo a palavra ao advogado do Estado."
+- Após a sustentação do Estado: "Agradeço ao advogado do Estado. Concedo a palavra ao Procurador-Geral da República."
+
+VOTAÇÃO (20 segundos):
+"Passamos à votação. Pelo provimento do recurso?"
+(Aguarda votação dos demais ministros)
+
+ENCERRAMENTO (10 segundos):
+"Por X a Y, o recurso é [improvedido/provido]. A lei é [constitucional/inconstitucional]. A sessão está encerrada."
+
+Brasília, 2024
+            `;
+        }
+
+        function votoRelator() {
+            return `
+VOTO DO MINISTRO RELATOR
+RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
+
+Excelentíssimo Senhor Ministro Presidente,
+Ilustres Colegas,
+
+Trata-se de Recurso Extraordinário interposto pela ACOBEST - Associação Comercial e de Empresas de Serviços Terciários, em face de decisão que julgou constitucional a Lei Estadual nº 99.999/2024, que cancela a inscrição estadual de empresas que prestam apoio logístico, informativo ou comercial ao suicídio assistido no exterior.
+
+O caso apresenta repercussão geral reconhecida, consoante decisão desta Corte, nos termos do art. 102, § 3º, da Constituição Federal.
+
+Os principais pontos a serem analisados são:
+1. Se a lei estadual invade competência privativa da União para legislar sobre direito civil e comercial;
+2. Se a medida ofende os princípios constitucionais da livre iniciativa e autonomia da vontade;
+3. Se a restrição imposta é razoável e proporcional;
+4. Se a lei possui efeito extraterritorial indevido.
+
+Analisando o caso concreto, entendo que a lei estadual efetivamente invade competência da União para legislar sobre direito civil e comercial, nos termos do art. 22, I, da Constituição Federal. Ademais, a medida restritiva imposta desproporcionalmente ofende a livre iniciativa e a autonomia privada, sem demonstrar adequada conexão com a proteção de bem jurídico constitucionalmente relevante no âmbito estadual.
+
+Pelo exposto, VOTO pelo provimento do recurso para declarar a inconstitucionalidade da Lei Estadual nº 99.999/2024.
+
+Brasília, 2024
+            `;
+        }
+
+        function sustentacaoACOBEST() {
+            return `
+SUSTENTAÇÃO ORAL DA ACOBEST
+RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
+
+Excelentíssimo Senhor Ministro Presidente,
+Ilustres Ministros,
+
+Venho perante esta Corte Suprema sustentar o provimento do recurso extraordinário interposto pela ACOBEST, visando a declaração de inconstitucionalidade da Lei Estadual nº 99.999/2024.
+
+Inicialmente, cumpre destacar que a referida lei invade competência privativa da União para legislar sobre direito civil e comercial, conforme expressamente estabelecido no art. 22, I, da Constituição Federal. Ao impor sanções administrativas a empresas que atuam no apoio a serviços localizados no exterior, o Estado-membro legislou sobre matéria de competência exclusiva da União.
+
+Ademais, a lei ofende gravemente os princípios constitucionais da livre iniciativa e da autonomia da vontade, previstos no art. 1º, III, art. 5º, caput, e art. 170 da Carta Magna. A atividade desenvolvida pelas empresas associadas à ACOBEST é lícita e legalmente autorizada nos países onde ocorre, não cabendo ao Estado brasileiro impedir que cidadãos exercitem sua autonomia privada em território estrangeiro.
+
+A medida é manifestamente desproporcional e desarrazoada, na medida em que busca coibir, por meio de sanção econômica no Brasil, atividade legalmente realizada no exterior, configurando indevido efeito extraterritorial da legislação estadual.
+
+Pelos fundamentos expostos, requeremos o provimento do recurso para declarar a inconstitucionalidade da lei estadual questionada.
+
+Brasília, 2024
+            `;
+        }
+
+        function sustentacaoEstado() {
+            return `
+SUSTENTAÇÃO ORAL DO ESTADO
+RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
+
+Excelentíssimo Senhor Ministro Presidente,
+Ilustres Ministros,
+
+Em defesa da constitucionalidade da Lei Estadual nº 99.999/2024, sustento o improvimento do recurso extraordinário interposto pela ACOBEST.
+
+A lei questionada não invade competência da União, uma vez que se limita a regular o exercício de atividade econômica no território estadual, nos estritos termos do art. 24, VI e VII, da Constituição Federal, que atribui competência concorrente aos Estados para legislar sobre direito econômico e proteção à saúde.
+
+A medida adotada pelo Estado-membro visa proteger a vida e a dignidade da pessoa humana, valores fundamentais consagrados no art. 1º, III, e art. 5º, caput, da Constituição. A intermediação de serviços de suicídio assistido, ainda que realizado no exterior, fomenta prática contrária à ordem pública e aos bons costumes vigentes em nosso país.
+
+A suposta ofensa à livre iniciativa não se sustenta, uma vez que a Constituição Federal não garante direito absoluto à liberdade econômica, especialmente quando colide com valores fundamentais como a proteção da vida e da dignidade humana.
+
+Nestes termos, requeremos o improvimento do recurso, mantendo-se a validade da Lei Estadual nº 99.999/2024.
+
+Brasília, 2024
+            `;
+        }
+
+        function manifestacaoPGR() {
+            return `
+MANIFESTAÇÃO DO PROCURADOR-GERAL DA REPÚBLICA
+RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
+
+Excelentíssimo Senhor Ministro Presidente,
+Ilustres Ministros,
+
+O Ministério Público Federal, no exercício de sua função institucional, vem manifestar-se no presente recurso extraordinário.
+
+Entendemos que a Lei Estadual nº 99.999/2024, embora fundada no nobre propósito de proteger a vida e a dignidade humana, efetivamente exorbita a competência legislativa do Estado-membro ao legislar sobre matéria de direito civil e comercial, de competência privativa da União nos termos do art. 22, I, da Constituição Federal.
+
+Contudo, registramos a gravidade da atividade desenvolvida pelas empresas recorrentes, que, ainda que legal em outros países, colide com valores fundamentais do ordenamento jurídico brasileiro, notadamente a proteção integral da vida humana.
+
+Neste sentido, embora reconhecendo a inconstitucionalidade formal da lei estadual por vício de competência, alertamos esta Corte para a necessidade de regulamentação federal da matéria, de modo a coibir abusos e proteger valores constitucionais caros à sociedade brasileira.
+
+Pelo exposto, nos manifestamos pelo provimento do recurso para declarar a inconstitucionalidade da lei estadual, sem prejuízo da adoção de medidas legislativas federais sobre a matéria.
+
+Brasília, 2024
+            `;
+        }
+
+        function cronogramaApresentacao() {
+            return `
+CRONOGRAMA DE APRESENTAÇÃO
+RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
+
+PARTICIPANTE                ATIVIDADE                      TEMPO
+Ministro Presidente        Abertura da sessão             30 segundos
+Ministro Relator           Apresentação do voto           3 minutos
+Advogado da ACOBEST        Sustentação oral               5 minutos
+Advogado do Estado         Sustentação oral               5 minutos
+Procurador-Geral da República Manifestação                3 minutos
+Ministros                  Votação                        2 minutos cada
+Ministro Presidente        Encerramento                   30 segundos
+
+Total estimado: Aproximadamente 25-30 minutos
+
+Brasília, 2024
+            `;
+        }
+    </script>
+</body>
+</html>
