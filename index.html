@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Material para Simulação de Tribunal - RE 100.874.901/XX</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Adicionando a biblioteca jsPDF para gerar PDFs -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
     <style>
         :root {
             --primary-color: #2c3e50;
@@ -107,6 +109,8 @@
             margin-top: 10px;
             transition: background-color 0.3s;
             font-size: 16px;
+            border: none;
+            font-family: inherit;
         }
         
         .download-btn i {
@@ -136,6 +140,42 @@
         .logo {
             font-size: 24px;
             margin-bottom: 10px;
+        }
+        
+        /* Loading spinner para download */
+        .spinner {
+            display: inline-block;
+            width: 20px;
+            height: 20px;
+            border: 3px solid rgba(255,255,255,.3);
+            border-radius: 50%;
+            border-top-color: #fff;
+            animation: spin 1s ease-in-out infinite;
+            margin-right: 8px;
+            display: none;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+        
+        /* Toast de notificação */
+        .toast {
+            position: fixed;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #333;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 4px;
+            z-index: 1000;
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .toast.show {
+            opacity: 1;
         }
         
         /* Responsividade */
@@ -299,6 +339,8 @@
         </ul>
     </nav>
 
+    <div class="toast" id="toast"></div>
+
     <div class="header">
         <div class="logo">
             <i class="fas fa-balance-scale"></i> STF Simulação
@@ -319,17 +361,19 @@
                 <div class="participant-card">
                     <h3><i class="fas fa-file-pdf download-icon"></i> Memorial da ACOBEST (Recorrente)</h3>
                     <p>Documento completo com fundamentação jurídica da recorrente.</p>
-                    <a class="download-btn" href="#" onclick="downloadDoc('acobest')">
+                    <button class="download-btn" onclick="downloadDoc('acobest', this)">
+                        <span class="spinner" id="spinner-acobest"></span>
                         <i class="fas fa-download"></i> Baixar Memorial ACOBEST
-                    </a>
+                    </button>
                 </div>
                 
                 <div class="participant-card">
                     <h3><i class="fas fa-file-pdf download-icon"></i> Memorial do Governador do Estado (Recorrido)</h3>
                     <p>Documento completo com fundamentação jurídica do recorrido.</p>
-                    <a class="download-btn" href="#" onclick="downloadDoc('governador')">
+                    <button class="download-btn" onclick="downloadDoc('governador', this)">
+                        <span class="spinner" id="spinner-governador"></span>
                         <i class="fas fa-download"></i> Baixar Memorial Governador
-                    </a>
+                    </button>
                 </div>
             </div>
 
@@ -339,50 +383,56 @@
                 <div class="participant-card">
                     <h3><i class="fas fa-microphone download-icon"></i> Ministro Presidente</h3>
                     <p>Roteiro completo de abertura, condução e encerramento da sessão.</p>
-                    <a class="download-btn" href="#" onclick="downloadDoc('presidente')">
+                    <button class="download-btn" onclick="downloadDoc('presidente', this)">
+                        <span class="spinner" id="spinner-presidente"></span>
                         <i class="fas fa-download"></i> Baixar Roteiro Presidente
-                    </a>
+                    </button>
                 </div>
                 
                 <div class="participant-card">
                     <h3><i class="fas fa-gavel download-icon"></i> Ministro Relator</h3>
                     <p>Voto inicial com análise do caso e posicionamento.</p>
-                    <a class="download-btn" href="#" onclick="downloadDoc('relator')">
+                    <button class="download-btn" onclick="downloadDoc('relator', this)">
+                        <span class="spinner" id="spinner-relator"></span>
                         <i class="fas fa-download"></i> Baixar Voto Relator
-                    </a>
+                    </button>
                 </div>
                 
                 <div class="participant-card">
                     <h3><i class="fas fa-user-tie download-icon"></i> Advogado da ACOBEST</h3>
                     <p>Sustentação oral completa da recorrente.</p>
-                    <a class="download-btn" href="#" onclick="downloadDoc('advogado_acobest')">
+                    <button class="download-btn" onclick="downloadDoc('advogado_acobest', this)">
+                        <span class="spinner" id="spinner-advogado_acobest"></span>
                         <i class="fas fa-download"></i> Baixar Sustentação ACOBEST
-                    </a>
+                    </button>
                 </div>
                 
                 <div class="participant-card">
                     <h3><i class="fas fa-user-tie download-icon"></i> Advogado do Estado</h3>
                     <p>Sustentação oral completa do recorrido.</p>
-                    <a class="download-btn" href="#" onclick="downloadDoc('advogado_estado')">
+                    <button class="download-btn" onclick="downloadDoc('advogado_estado', this)">
+                        <span class="spinner" id="spinner-advogado_estado"></span>
                         <i class="fas fa-download"></i> Baixar Sustentação Estado
-                    </a>
+                    </button>
                 </div>
                 
                 <div class="participant-card">
                     <h3><i class="fas fa-scale-balanced download-icon"></i> Procurador-Geral da República</h3>
                     <p>Manifestação institucional sobre o caso.</p>
-                    <a class="download-btn" href="#" onclick="downloadDoc('pgr')">
+                    <button class="download-btn" onclick="downloadDoc('pgr', this)">
+                        <span class="spinner" id="spinner-pgr"></span>
                         <i class="fas fa-download"></i> Baixar Manifestação PGR
-                    </a>
+                    </button>
                 </div>
             </div>
 
             <div class="section" id="cronograma">
                 <h2>CRONOGRAMA DE APRESENTAÇÃO</h2>
                 <p>Documento com a divisão de tempo e sequência da apresentação.</p>
-                <a class="download-btn" href="#" onclick="downloadDoc('cronograma')">
+                <button class="download-btn" onclick="downloadDoc('cronograma', this)">
+                    <span class="spinner" id="spinner-cronograma"></span>
                     <i class="fas fa-download"></i> Baixar Cronograma
-                </a>
+                </button>
             </div>
 
             <div class="footer">
@@ -393,10 +443,14 @@
     </div>
 
     <script>
+        // Inicializar jsPDF
+        const { jsPDF } = window.jspdf;
+        
         // Menu mobile
         const menuToggle = document.getElementById('menuToggle');
         const navMenu = document.getElementById('navMenu');
         const overlay = document.getElementById('overlay');
+        const toast = document.getElementById('toast');
         
         menuToggle.addEventListener('click', function() {
             navMenu.classList.toggle('active');
@@ -425,70 +479,109 @@
             });
         });
 
+        // Função para mostrar notificação
+        function showToast(message, isSuccess = true) {
+            toast.textContent = message;
+            toast.style.backgroundColor = isSuccess ? '#2ecc71' : '#e74c3c';
+            toast.classList.add('show');
+            
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000);
+        }
+
         // Função para download
-        function downloadDoc(type) {
-            let content = "";
-            let filename = "";
+        async function downloadDoc(type, button) {
+            // Mostrar spinner e desativar botão
+            const spinner = button.querySelector('.spinner');
+            const icon = button.querySelector('.fa-download');
+            spinner.style.display = 'inline-block';
+            icon.style.display = 'none';
+            button.disabled = true;
             
-            switch(type) {
-                case 'acobest':
-                    filename = "Memorial_ACOBEST.doc";
-                    content = memorialACOBEST();
-                    break;
-                case 'governador':
-                    filename = "Memorial_Governador.doc";
-                    content = memorialGovernador();
-                    break;
-                case 'presidente':
-                    filename = "Roteiro_Presidente.doc";
-                    content = roteiroPresidente();
-                    break;
-                case 'relator':
-                    filename = "Voto_Relator.doc";
-                    content = votoRelator();
-                    break;
-                case 'advogado_acobest':
-                    filename = "Sustentacao_ACOBEST.doc";
-                    content = sustentacaoACOBEST();
-                    break;
-                case 'advogado_estado':
-                    filename = "Sustentacao_Estado.doc";
-                    content = sustentacaoEstado();
-                    break;
-                case 'pgr':
-                    filename = "Manifestacao_PGR.doc";
-                    content = manifestacaoPGR();
-                    break;
-                case 'cronograma':
-                    filename = "Cronograma_Apresentacao.doc";
-                    content = cronogramaApresentacao();
-                    break;
+            try {
+                let filename = "";
+                let title = "";
+                let content = "";
+                
+                switch(type) {
+                    case 'acobest':
+                        filename = "Memorial_ACOBEST.pdf";
+                        title = "MEMORIAL DA ACOBEST - RECORRENTE";
+                        content = memorialACOBEST();
+                        break;
+                    case 'governador':
+                        filename = "Memorial_Governador.pdf";
+                        title = "MEMORIAL DO GOVERNADOR DO ESTADO - RECORRIDO";
+                        content = memorialGovernador();
+                        break;
+                    case 'presidente':
+                        filename = "Roteiro_Presidente.pdf";
+                        title = "ROTEIRO DO MINISTRO PRESIDENTE";
+                        content = roteiroPresidente();
+                        break;
+                    case 'relator':
+                        filename = "Voto_Relator.pdf";
+                        title = "VOTO DO MINISTRO RELATOR";
+                        content = votoRelator();
+                        break;
+                    case 'advogado_acobest':
+                        filename = "Sustentacao_ACOBEST.pdf";
+                        title = "SUSTENTAÇÃO ORAL DA ACOBEST";
+                        content = sustentacaoACOBEST();
+                        break;
+                    case 'advogado_estado':
+                        filename = "Sustentacao_Estado.pdf";
+                        title = "SUSTENTAÇÃO ORAL DO ESTADO";
+                        content = sustentacaoEstado();
+                        break;
+                    case 'pgr':
+                        filename = "Manifestacao_PGR.pdf";
+                        title = "MANIFESTAÇÃO DO PROCURADOR-GERAL DA REPÚBLICA";
+                        content = manifestacaoPGR();
+                        break;
+                    case 'cronograma':
+                        filename = "Cronograma_Apresentacao.pdf";
+                        title = "CRONOGRAMA DE APRESENTAÇÃO";
+                        content = cronogramaApresentacao();
+                        break;
+                }
+                
+                // Criar PDF
+                const doc = new jsPDF();
+                
+                // Adicionar conteúdo ao PDF
+                const lines = doc.splitTextToSize(content, 180);
+                doc.setFontSize(16);
+                doc.text(title, 105, 15, { align: 'center' });
+                doc.setFontSize(12);
+                doc.text(lines, 15, 30);
+                
+                // Adicionar data e rodapé
+                doc.setFontSize(10);
+                doc.text("Brasília, 2024", 105, 280, { align: 'center' });
+                doc.text("Material preparado para simulação de tribunal acadêmico", 105, 285, { align: 'center' });
+                
+                // Salvar o PDF
+                doc.save(filename);
+                
+                // Mostrar mensagem de sucesso
+                showToast('Download realizado com sucesso!');
+                
+            } catch (error) {
+                console.error('Erro ao gerar PDF:', error);
+                showToast('Erro ao baixar o arquivo. Tente novamente.', false);
+            } finally {
+                // Restaurar botão
+                spinner.style.display = 'none';
+                icon.style.display = 'inline-block';
+                button.disabled = false;
             }
-            
-            // Criar blob e fazer download
-            const blob = new Blob([content], { type: 'application/msword' });
-            const url = URL.createObjectURL(blob);
-            
-            // Criar link temporário para download (compatível com mobile)
-            const a = document.createElement('a');
-            a.href = url;
-            a.download = filename;
-            a.style.display = 'none';
-            
-            document.body.appendChild(a);
-            a.click();
-            
-            // Limpeza
-            setTimeout(function() {
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }, 100);
         }
 
         // Funções que retornam o conteúdo dos documentos
         function memorialACOBEST() {
-            return `MEMORIAL DA ACOBEST - RECORRENTE
-RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
+            return `RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
 
 Advogados: Equipe Jurídica da ACOBEST
 RECORRENTE: ACOBEST
@@ -501,14 +594,11 @@ EMENTA DA REPERCUSSÃO GERAL: RECURSO EXTRAORDINÁRIO. LEI ESTADUAL QUE CANCELA 
 
 ARGUMENTAÇÃO: A lei invade competência da União (art. 22, I, CF/88). Viola a liberdade de empresa e a autonomia privada (art. 1º, III, art. 5º, caput, e art. 170, CF/88). Ofende o princípio da razoabilidade ao impedir atividade lícita no exterior. A lei possui efeito extraterritorial indevido.
 
-PEDIDO: Declarar a inconstitucionalidade da Lei Estadual nº 99.999/2024.
-
-Brasília, 2024`;
+PEDIDO: Declarar a inconstitucionalidade da Lei Estadual nº 99.999/2024.`;
         }
 
         function memorialGovernador() {
-            return `MEMORIAL DO GOVERNADOR DO ESTADO - RECORRIDO
-RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
+            return `RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
 
 Advogados: Procuradoria do Estado
 RECORRENTE: ACOBEST
@@ -521,14 +611,11 @@ EMENTA DA REPERCUSSÃO GERAL: RECURSO EXTRAORDINÁRIO. LEI ESTADUAL. CASSACIÓN 
 
 ARGUMENTAÇÃO: A lei visa proteger a vida e a dignidade humana, valores fundamentais (art. 5º, caput, CF/88). O Estado tem competência para regular atividades econômicas que afetam a ordem social local (art. 24, CF/88). A medida é razoável e proporcional para coibir práticas contrárias à ética e à lei. Não há ofensa à livre iniciativa, pois a atividade em questão colide com o ordenamento jurídico nacional.
 
-PEDIDO: Negar provimento ao recurso e manter a validade da Lei Estadual nº 99.999/2024.
-
-Brasília, 2024`;
+PEDIDO: Negar provimento ao recurso e manter a validade da Lei Estadual nº 99.999/2024.`;
         }
 
         function roteiroPresidente() {
-            return `ROTEIRO DO MINISTRO PRESIDENTE
-RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
+            return `RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
 
 FALA DE ABERTURA (30 segundos):
 "Boa tarde. Abro a sessão de julgamento do Recurso Extraordinário nº 100.874.901/XX, com repercussão geral reconhecida, que discute a constitucionalidade da Lei Estadual nº 99.999/2024. Conforme o rito, concedo a palavra ao eminente Ministro Relator."
@@ -543,14 +630,11 @@ VOTAÇÃO (20 segundos):
 (Aguarda votação dos demais ministros)
 
 ENCERRAMENTO (10 segundos):
-"Por X a Y, o recurso é [improvedido/provido]. A lei é [constitucional/inconstitucional]. A sessão está encerrada."
-
-Brasília, 2024`;
+"Por X a Y, o recurso é [improvedido/provido]. A lei é [constitucional/inconstitucional]. A sessão está encerrada."`;
         }
 
         function votoRelator() {
-            return `VOTO DO MINISTRO RELATOR
-RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
+            return `RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
 
 Excelentíssimo Senhor Ministro Presidente,
 Ilustres Colegas,
@@ -561,20 +645,17 @@ O caso apresenta repercussão geral reconhecida, consoante decisão desta Corte,
 
 Os principais pontos a serem analisados são:
 1. Se a lei estadual invade competência privativa da União para legislar sobre direito civil e comercial;
-2. Se a medida ofende os princípios constitucionais da livre iniciativa e autonomia da vontade;
+2. Se a medida ofende os principíos constitucionais da livre iniciativa e autonomia da vontade;
 3. Se a restrição imposta é razoável e proporcional;
 4. Se a lei possui efeito extraterritorial indevido.
 
 Analisando o caso concreto, entendo que a lei estadual efetivamente invade competência da União para legislar sobre direito civil e comercial, nos termos do art. 22, I, da Constituição Federal. Ademais, a medida restritiva imposta desproporcionalmente ofende a livre iniciativa e a autonomia privada, sem demonstrar adequada conexão com a proteção de bem jurídico constitucionalmente relevante no âmbito estadual.
 
-Pelo exposto, VOTO pelo provimento do recurso para declarar a inconstitucionalidade da Lei Estadual nº 99.999/2024.
-
-Brasília, 2024`;
+Pelo exposto, VOTO pelo provimento do recurso para declarar a inconstitucionalidade da Lei Estadual nº 99.999/2024.`;
         }
 
         function sustentacaoACOBEST() {
-            return `SUSTENTAÇÃO ORAL DA ACOBEST
-RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
+            return `RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
 
 Excelentíssimo Senhor Ministro Presidente,
 Ilustres Ministros,
@@ -587,14 +668,11 @@ Ademais, a lei ofende gravemente os princípios constitucionais da livre iniciat
 
 A medida é manifestamente desproporcional e desarrazoada, na medida em que busca coibir, por meio de sanção econômica no Brasil, atividade legalmente realizada no exterior, configurando indevido efeito extraterritorial da legislação estadual.
 
-Pelos fundamentos expostos, requeremos o provimento do recurso para declarar a inconstitucionalidade da lei estadual questionada.
-
-Brasília, 2024`;
+Pelos fundamentos expostos, requeremos o provimento do recurso para declarar a inconstitucionalidade da lei estadual questionada.`;
         }
 
         function sustentacaoEstado() {
-            return `SUSTENTAÇÃO ORAL DO ESTADO
-RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
+            return `RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
 
 Excelentíssimo Senhor Ministro Presidente,
 Ilustres Ministros,
@@ -607,14 +685,11 @@ A medida adotada pelo Estado-membro visa proteger a vida e a dignidade da pessoa
 
 A suposta ofensa à livre iniciativa não se sustenta, uma vez que a Constituição Federal não garante direito absoluto à liberdade econômica, especialmente quando colide com valores fundamentais como a proteção da vida e da dignidade humana.
 
-Nestes termos, requeremos o improvimento do recurso, mantendo-se a validade da Lei Estadual nº 99.999/2024.
-
-Brasília, 2024`;
+Nestes termos, requeremos o improvimento do recurso, mantendo-se a validade da Lei Estadual nº 99.999/2024.`;
         }
 
         function manifestacaoPGR() {
-            return `MANIFESTAÇÃO DO PROCURADOR-GERAL DA REPÚBLICA
-RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
+            return `RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
 
 Excelentíssimo Senhor Ministro Presidente,
 Ilustres Ministros,
@@ -627,14 +702,11 @@ Contudo, registramos a gravidade da atividade desenvolvida pelas empresas recorr
 
 Neste sentido, embora reconhecendo a inconstitucionalidade formal da lei estadual por vício de competência, alertamos esta Corte para a necessidade de regulamentação federal da matéria, de modo a coibir abusos e proteger valores constitucionais caros à sociedade brasileira.
 
-Pelo exposto, nos manifestamos pelo provimento do recurso para declarar a inconstitucionalidade da lei estadual, sem prejuízo da adoção de medidas legislativas federais sobre a matéria.
-
-Brasília, 2024`;
+Pelo exposto, nos manifestamos pelo provimento do recurso para declarar a inconstitucionalidade da lei estadual, sem prejuízo da adoção de medidas legislativas federais sobre a matéria.`;
         }
 
         function cronogramaApresentacao() {
-            return `CRONOGRAMA DE APRESENTAÇÃO
-RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
+            return `RECURSO EXTRAORDINÁRIO Nº 100.874.901/XX
 
 PARTICIPANTE                ATIVIDADE                      TEMPO
 Ministro Presidente        Abertura da sessão             30 segundos
@@ -645,9 +717,7 @@ Procurador-Geral da República Manifestação                3 minutos
 Ministros                  Votação                        2 minutos cada
 Ministro Presidente        Encerramento                   30 segundos
 
-Total estimado: Aproximadamente 25-30 minutos
-
-Brasília, 2024`;
+Total estimado: Aproximadamente 25-30 minutos`;
         }
     </script>
 </body>
